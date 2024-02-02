@@ -90,7 +90,9 @@ func (l *WebsocketListener) register(cnn *websocket.Conn) Client {
 	}
 
 	l.Clients = append(l.Clients, client)
-	l.connectionHandler(client)
+	if l.connectionHandler != nil {
+		l.connectionHandler(client)
+	}
 
 	return client
 }
@@ -127,7 +129,9 @@ func (l *WebsocketListener) HandleConnections(w http.ResponseWriter, r *http.Req
 		var msg Message
 		if err := client.Conn.ReadJSON(&msg); err != nil {
 			log.Printf("Cannot read the message: %v", err)
-			l.disconnectionHandler(client)
+			if l.disconnectionHandler != nil {
+				l.disconnectionHandler(client)
+			}
 			l.removeClientByConn(ws)
 			break
 		}

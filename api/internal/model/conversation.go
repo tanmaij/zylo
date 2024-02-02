@@ -6,8 +6,6 @@ type Message struct {
 }
 
 type Conversation struct {
-	AccessToken string `json:"access_token"`
-
 	Character Character `json:"character"`
 	Messages  []Message `json:"messages"`
 }

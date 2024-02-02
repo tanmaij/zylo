@@ -54,7 +54,7 @@ func main() {
 
 	// Create a new router and configure routes.
 	appRouter := router.New(websocketListener, wsHandler)
-	appRouter.Routes(r)
+	appRouter.RegisterRoutes(r)
 
 	// Start the HTTP server and listen for incoming requests.
 	http.ListenAndServe(appCfg.Port, r)

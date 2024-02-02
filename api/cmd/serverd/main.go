@@ -6,6 +6,7 @@ import (
 
 	"github.com/tanmaij/zylo/cmd/serverd/router"
 	"github.com/tanmaij/zylo/config"
+	"github.com/tanmaij/zylo/internal/client/openai"
 	chatwithsimchar "github.com/tanmaij/zylo/internal/controller/chat_with_sim_char"
 	wsHandler "github.com/tanmaij/zylo/internal/handler/ws"
 	conversationRedisRepo "github.com/tanmaij/zylo/internal/memory/conversation"
@@ -43,8 +44,14 @@ func main() {
 	charRepo := characterRepo.New()
 	converRedisRepo := conversationRedisRepo.New()
 
+	// Initialize api clients
+	chatCompletation, err := openai.NewChatCompletion(config.Instance.OpenAI.APIKey)
+	if err != nil {
+		log.Fatalf("Error creating chat completion, error: %v", err)
+	}
+
 	// Create a new controller for handling chat with simulated characters.
-	chatWithSimCharCtrl := chatwithsimchar.New(wsBroadcast, charRepo, converRedisRepo)
+	chatWithSimCharCtrl := chatwithsimchar.New(wsBroadcast, charRepo, converRedisRepo, chatCompletation)
 
 	// Create a WebSocket handler with the chat controller.
 	wsHandler := wsHandler.New(chatWithSimCharCtrl)

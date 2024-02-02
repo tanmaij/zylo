@@ -20,14 +20,22 @@ func Initial() error {
 
 // Config represents a config instance
 type Config struct {
-	App   App
-	Redis RedisClient
+	App    App
+	OpenAI OpenAI
+	Redis  RedisClient
 }
 
 // App app configuration
 type App struct {
 	ChatLimitDuration int64  `env:"CHAT_LIMIT_DURATION" envDefault:"3"`
 	Port              string `env:"PORT" envDefault:":5000"`
+}
+
+type OpenAI struct {
+	ChatCompletionAPIURL string `env:"OPENAI_CHAT_COMPLETION_URL" envDefault:"https://api.openai.com/v1/chat/completions"`
+	ChatCompletionModel  string `env:"OPENAI_CHAT_COMPLETION_MODEL" envDefault:"gpt-3.5-turbo-1106"`
+
+	APIKey string `env:"OPENAI_API_KEY" envDefault:"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"`
 }
 
 // RedisClient represents the redis connection

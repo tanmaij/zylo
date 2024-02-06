@@ -8,6 +8,7 @@ import (
 	"github.com/tanmaij/zylo/config"
 	"github.com/tanmaij/zylo/internal/client/openai"
 	chatwithsimchar "github.com/tanmaij/zylo/internal/controller/chat_with_sim_char"
+	"github.com/tanmaij/zylo/internal/handler/rest"
 	wsHandler "github.com/tanmaij/zylo/internal/handler/ws"
 	conversationRedisRepo "github.com/tanmaij/zylo/internal/memory/conversation"
 	characterRepo "github.com/tanmaij/zylo/internal/repository/character"
@@ -28,7 +29,7 @@ func main() {
 	appCfg := config.Instance.App
 
 	// Initialize a new Redis client.
-	_, err := redis.NewRedisClient()
+	redisClient, err := redis.NewRedisClient()
 	if err != nil {
 		log.Fatal("Failed to initialize Redis client:", err)
 	}
@@ -42,10 +43,10 @@ func main() {
 
 	// Initialize repositories
 	charRepo := characterRepo.New()
-	converRedisRepo := conversationRedisRepo.New()
+	converRedisRepo := conversationRedisRepo.New(redisClient)
 
 	// Initialize api clients
-	chatCompletation, err := openai.NewChatCompletion(config.Instance.OpenAI.APIKey)
+	chatCompletation, err := openai.NewChatCompletion(config.Instance.OpenAI.APIKey, config.Instance.OpenAI.ChatCompletionModel)
 	if err != nil {
 		log.Fatalf("Error creating chat completion, error: %v", err)
 	}
@@ -56,13 +57,17 @@ func main() {
 	// Create a WebSocket handler with the chat controller.
 	wsHandler := wsHandler.New(chatWithSimCharCtrl)
 
+	restHandler := rest.New(chatWithSimCharCtrl)
+
 	// Create a new Chi router.
 	r := chi.NewRouter()
 
 	// Create a new router and configure routes.
-	appRouter := router.New(websocketListener, wsHandler)
+	appRouter := router.New(websocketListener, wsHandler, restHandler)
 	appRouter.RegisterRoutes(r)
 
 	// Start the HTTP server and listen for incoming requests.
-	http.ListenAndServe(appCfg.Port, r)
+	if err := http.ListenAndServe(appCfg.Port, r); err != nil {
+		log.Fatalf("Error starting HTTP server, error: %v", err)
+	}
 }

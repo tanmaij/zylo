@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bf629414-5436-4658-85b8-9c720d333ff0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/internal/controller/chat_with_sim_char/errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/handler/rest/common.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/serverd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/serverd/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/serverd/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/serverd/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/client/openai/chat_completion.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/client/openai/chat_completion.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/chat_with_sim_char/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/chat_with_sim_char/impl.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/handler/rest/chat_with_sim_char.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/handler/rest/chat_with_sim_char.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/handler/ws/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/handler/ws/handlers.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/memory/conversation/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/memory/conversation/impl.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/model/character.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/model/character.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/model/conversation.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/model/conversation.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/repository/character/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/repository/character/impl.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/redis/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/redis/client.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2bwa1x63C226m7cP6K5ZTzmLUvn" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Go Build.go build github.com/tanmaij/zylo/cmd/serverd.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.vendoring.notification.had.been.shown&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;configurable..is.expanded&quot;: &quot;false&quot;,
+    &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mai.nguyent/Documents/D/Works/zylo/api&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="go build github.com/tanmaij/zylo/cmd/serverd" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="api" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/tanmaij/zylo/cmd/serverd" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/cmd/serverd/main.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build github.com/tanmaij/zylo/cmd/serverd" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-cf85c2eafa99-d131227c97e2-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-241.10840.30" />
+        <option value="bundled-js-predefined-1d06a55b98c1-e293885f7bc4-JavaScript-GO-241.10840.30" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

@@ -2,7 +2,11 @@ package chatwithsimchar
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"log"
+	"math/rand"
+	"time"
 
 	openaiClient "github.com/tanmaij/zylo/internal/client/openai"
 	conversationRedisRepo "github.com/tanmaij/zylo/internal/memory/conversation"
@@ -48,7 +52,6 @@ func (i Impl) Test(client ws.Client, inp TestInput) {
 				Content: inp.Message,
 			},
 		},
-		Model: "gpt-3.5-turbo-1106",
 	})
 	if err != nil {
 		log.Printf("Error creating OpenAI chat completion: %v", err)
@@ -61,4 +64,109 @@ func (i Impl) Test(client ws.Client, inp TestInput) {
 			Data:      generated[idx].Content,
 		})
 	}
+}
+
+type GetCurrentConversation struct {
+	ClientUUID string
+}
+
+func (i Impl) GetCurrentConversation(ctx context.Context, inp GetCurrentConversation) (model.Conversation, error) {
+	c, err := i.conversationRedisRepo.Get(ctx, inp.ClientUUID)
+	if err != nil {
+		if errors.Is(err, conversationRedisRepo.ErrNotFound) {
+			chars, err := i.characterRepo.List(ctx)
+			if err != nil {
+				return model.Conversation{}, err
+			}
+
+			charIdx := rand.Intn(len(chars))
+			newConv := model.Conversation{
+				Character: chars[charIdx],
+				Messages:  []model.Message{},
+			}
+
+			if err := i.conversationRedisRepo.Set(ctx, inp.ClientUUID, time.Minute*3, newConv); err != nil {
+				return model.Conversation{}, err
+			}
+
+			return newConv, nil
+		}
+
+		return model.Conversation{}, err
+	}
+
+	return c, nil
+}
+
+type ChatInput struct {
+	ClientUUID string
+	Message    string
+}
+
+type chatOutput struct {
+	Sender       string `json:"sender"`
+	SenderAvatar string `json:"senderAvatar"`
+	Message      string `json:"message"`
+}
+
+func (i Impl) Chat(ctx context.Context, inp ChatInput) (model.Message, error) {
+	c, err := i.conversationRedisRepo.Get(ctx, inp.ClientUUID)
+	if err != nil {
+		if errors.Is(err, conversationRedisRepo.ErrNotFound) {
+			return model.Message{}, ErrConvNotFound
+		}
+		return model.Message{}, err
+	}
+
+	newMsg := model.Message{
+		Role:    model.RoleUser,
+		Content: inp.Message,
+	}
+
+	c.Messages = append(c.Messages, newMsg)
+	if err := i.conversationRedisRepo.Set(ctx, inp.ClientUUID, time.Minute*3, c); err != nil {
+		return model.Message{}, err
+	}
+
+	go func() {
+		time.Sleep(time.Second * 4)
+
+		i.Broadcast.EmitToClientUUID(inp.ClientUUID, ws.Message{
+			EventName: "typing",
+			Data:      "",
+		})
+
+		generated, err := i.chatCompletionClient.RequestToGenerate(context.Background(), openaiClient.ChatCompletionInput{
+			Messages: append(append(c.Character.DefaultHistoryMsg, model.Message{
+				Role:    model.RoleSystem,
+				Content: c.Character.SystemMsg,
+			}), c.Messages...),
+		})
+		if err != nil {
+			i.Broadcast.EmitToClientUUID(inp.ClientUUID, ws.Message{
+				EventName: "reset-typing",
+				Data:      "",
+			})
+			return
+		}
+
+		for idx := range generated {
+			marshal, err := json.Marshal(chatOutput{
+				Sender:       c.Character.Name,
+				SenderAvatar: c.Character.AvatarURL,
+				Message:      generated[idx].Content,
+			})
+			if err != nil {
+				continue
+			}
+
+			// Emit a message to the client with a success event and data.
+			i.Broadcast.EmitToClientUUID(inp.ClientUUID, ws.Message{
+				EventName: "chat",
+				Data:      string(marshal),
+			})
+		}
+	}()
+
+	return newMsg, nil
 }

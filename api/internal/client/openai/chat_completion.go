@@ -12,10 +12,11 @@ import (
 
 type ChatCompletion struct {
 	apiKey               string
+	model                string
 	textGenerationClient *api.Client
 }
 
-func NewChatCompletion(apiKey string) (ChatCompletion, error) {
+func NewChatCompletion(apiKey, model string) (ChatCompletion, error) {
 	textGenerationClient, err := api.NewClient(
 		config.Instance.OpenAI.ChatCompletionAPIURL,
 		api.MethodPost,
@@ -26,6 +27,7 @@ func NewChatCompletion(apiKey string) (ChatCompletion, error) {
 	}
 
 	return ChatCompletion{
+		model:                model,
 		apiKey:               apiKey,
 		textGenerationClient: textGenerationClient,
 	}, nil
@@ -44,7 +46,6 @@ func createPayload(body []byte) api.Payload {
 
 type ChatCompletionInput struct {
 	Messages []model.Message
-	Model    string
 }
 
 func (i ChatCompletionInput) toRequestBody() chatCompletionRequest {
@@ -58,12 +59,12 @@ func (i ChatCompletionInput) toRequestBody() chatCompletionRequest {
 
 	return chatCompletionRequest{
 		Messages: msgs,
-		Model:    i.Model,
 	}
 }
 
 func (c ChatCompletion) RequestToGenerate(ctx context.Context, input ChatCompletionInput) ([]model.Message, error) {
 	requestBody := input.toRequestBody()
+	requestBody.Model = c.model
 
 	encodedRequestBody, err := utils.AnyToJSON(requestBody)
 	if err != nil {

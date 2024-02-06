@@ -4,6 +4,7 @@ import (
 	"log"
 
 	chatwithsimchar "github.com/tanmaij/zylo/internal/controller/chat_with_sim_char"
+	"github.com/tanmaij/zylo/pkg/utils"
 	"github.com/tanmaij/zylo/pkg/ws"
 )
 
@@ -23,9 +24,21 @@ type pingInput struct {
 	Message string `json:"message"`
 }
 
+type connectedOutput struct {
+	UUID string `json:"uuid"`
+}
+
 // OnConnection is called when a client establishes a WebSocket connection.
 func (h Handler) OnConnection(client ws.Client) error {
-	log.Println(client.UUID, "connected")
+	var output = connectedOutput{
+		UUID: client.UUID,
+	}
+	rs, err := utils.AnyToJSON(output)
+	if err != nil {
+		return err
+	}
+
+	client.Broadcast.EmitToClientUUID(client.UUID, ws.Message{EventName: "connection", Data: string(rs)})
 
 	return nil
 }

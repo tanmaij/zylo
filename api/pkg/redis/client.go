@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log"
 	"time"
 
@@ -43,6 +44,9 @@ func (c Client) Get(ctx context.Context, key string, data interface{}) error {
 	// Retrieve data as bytes from Redis using the specified key.
 	dataBytes, err := c.redisClient.Get(ctx, key).Bytes()
 	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			return ErrNotFound
+		}
 		return err
 	}
 
@@ -61,3 +65,7 @@ func (c Client) Set(ctx context.Context, key string, duration time.Duration, dat
 	// Set the JSON-encoded data in Redis with the specified key and expiration duration.
 	return c.redisClient.Set(ctx, key, dataBytes, duration).Err()
 }
+
+var (
+	ErrNotFound = errors.New("not found in redis db")
+)

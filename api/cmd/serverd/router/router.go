@@ -8,6 +8,8 @@ import (
 	"github.com/tanmaij/zylo/internal/handler/rest"
 	websocketHandler "github.com/tanmaij/zylo/internal/handler/ws"
 	"github.com/tanmaij/zylo/pkg/ws"
+
+	"github.com/go-chi/cors"
 )
 
 // Router struct represents the main router for handling HTTP and WebSocket routes.
@@ -24,6 +26,17 @@ func New(wsListener *ws.WebsocketListener, wsHandler websocketHandler.Handler, r
 
 // RegisterRoutes registers different route groups.
 func (router *Router) RegisterRoutes(r chi.Router) {
+	r.Use(cors.Handler(cors.Options{
+		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
+		AllowedOrigins: []string{"https://*", "http://*"},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
+
 	r.Group(router.test)
 	r.Group(router.websocket)
 	r.Group(router.users)

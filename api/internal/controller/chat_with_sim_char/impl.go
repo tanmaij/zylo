@@ -109,8 +109,12 @@ type chatOutput struct {
 	Message      string `json:"message"`
 }
 
+type typingOutput struct {
+	Name string `json:"name"`
+}
+
 func (i Impl) Chat(ctx context.Context, inp ChatInput) (model.Message, error) {
-	c, err := i.conversationRedisRepo.Get(ctx, inp.ClientUUID)
+	ca, err := i.conversationRedisRepo.Get(ctx, inp.ClientUUID)
 	if err != nil {
 		if errors.Is(err, conversationRedisRepo.ErrNotFound) {
 			return model.Message{}, ErrConvNotFound
@@ -123,37 +127,52 @@ func (i Impl) Chat(ctx context.Context, inp ChatInput) (model.Message, error) {
 		Content: inp.Message,
 	}
 
-	c.Messages = append(c.Messages, newMsg)
-	if err := i.conversationRedisRepo.Set(ctx, inp.ClientUUID, time.Minute*3, c); err != nil {
+	ca.Messages = append(ca.Messages, newMsg)
+	if err := i.conversationRedisRepo.Overwrite(ctx, inp.ClientUUID, ca); err != nil {
 		return model.Message{}, err
 	}
 
-	go func() {
+	go func(currentConv model.Conversation) {
 		time.Sleep(time.Second * 4)
+
+		marshal, err := json.Marshal(typingOutput{Name: currentConv.Character.Name})
+		if err != nil {
+		}
 
 		i.Broadcast.EmitToClientUUID(inp.ClientUUID, ws.Message{
 			EventName: "typing",
-			Data:      "",
+			Data:      string(marshal),
 		})
 
 		generated, err := i.chatCompletionClient.RequestToGenerate(context.Background(), openaiClient.ChatCompletionInput{
-			Messages: append(append(c.Character.DefaultHistoryMsg, model.Message{
+			Messages: append(append(currentConv.Character.DefaultHistoryMsg, model.Message{
 				Role:    model.RoleSystem,
-				Content: c.Character.SystemMsg,
-			}), c.Messages...),
+				Content: currentConv.Character.SystemMsg,
+			}), currentConv.Messages...),
 		})
+
+		rsMarshal, err := json.Marshal(typingOutput{Name: currentConv.Character.Name})
 		if err != nil {
-			i.Broadcast.EmitToClientUUID(inp.ClientUUID, ws.Message{
-				EventName: "reset-typing",
-				Data:      "",
-			})
+
+		}
+		i.Broadcast.EmitToClientUUID(inp.ClientUUID, ws.Message{
+			EventName: "reset-typing",
+			Data:      string(rsMarshal),
+		})
+
+		if err != nil {
 			return
 		}
 
 		for idx := range generated {
+			currentConv.Messages = append(currentConv.Messages, generated[idx])
+			if err := i.conversationRedisRepo.Overwrite(context.Background(), inp.ClientUUID, currentConv); err != nil {
+				log.Printf("overwriting got err: %v", err)
+			}
+
 			marshal, err := json.Marshal(chatOutput{
-				Sender:       c.Character.Name,
-				SenderAvatar: c.Character.AvatarURL,
+				Sender:       currentConv.Character.Name,
+				SenderAvatar: currentConv.Character.AvatarURL,
 				Message:      generated[idx].Content,
 			})
 			if err != nil {
@@ -166,7 +185,7 @@ func (i Impl) Chat(ctx context.Context, inp ChatInput) (model.Message, error) {
 				Data:      string(marshal),
 			})
 		}
-	}()
+	}(ca)
 
 	return newMsg, nil
 }

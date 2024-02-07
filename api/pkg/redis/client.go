@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -64,6 +65,23 @@ func (c Client) Set(ctx context.Context, key string, duration time.Duration, dat
 
 	// Set the JSON-encoded data in Redis with the specified key and expiration duration.
 	return c.redisClient.Set(ctx, key, dataBytes, duration).Err()
+}
+
+// Overwrite marshals the provided data into JSON and sets it in Redis with the specified key and expiration duration.
+func (c Client) Overwrite(ctx context.Context, key string, data interface{}) error {
+	remainingTime, err := c.redisClient.PTTL(context.Background(), key).Result()
+	if err != nil {
+		fmt.Println("Error getting remaining time:", err)
+		return err
+	}
+
+	dataBytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	// Set the JSON-encoded data in Redis with the specified key and expiration duration.
+	return c.redisClient.Set(ctx, key, dataBytes, remainingTime).Err()
 }
 
 var (

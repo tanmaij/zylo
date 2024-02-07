@@ -5,19 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf629414-5436-4658-85b8-9c720d333ff0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/internal/controller/chat_with_sim_char/errors.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/handler/rest/common.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/serverd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/serverd/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/api.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/serverd/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/serverd/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/client/openai/chat_completion.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/client/openai/chat_completion.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/controller/chat_with_sim_char/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/chat_with_sim_char/impl.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/handler/rest/chat_with_sim_char.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/handler/rest/chat_with_sim_char.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/handler/ws/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/handler/ws/handlers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/memory/conversation/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/memory/conversation/impl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/model/character.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/model/character.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/model/conversation.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/model/conversation.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/repository/character/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/repository/character/impl.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pkg/redis/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/redis/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/ws/ws.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/ws/ws.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/components/Style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/components/Style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/ChatBot.js" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/ChatBot.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +30,9 @@
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="reviewCommentPreferred" value="true" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -93,6 +99,17 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

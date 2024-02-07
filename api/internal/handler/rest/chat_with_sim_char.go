@@ -100,6 +100,13 @@ func (impl Impl) Chat(w http.ResponseWriter, r *http.Request) error {
 		}
 	}
 
+	if len(rq.Message) > 150 {
+		return HandlerError{
+			Code:        400,
+			Description: "Invalid msg",
+		}
+	}
+
 	chat, err := impl.ctrl.Chat(r.Context(), chatwithsimchar.ChatInput{
 		ClientUUID: clientUUID,
 		Message:    rq.Message,

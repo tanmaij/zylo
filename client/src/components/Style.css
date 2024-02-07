@@ -337,6 +337,7 @@ html, body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	object-fit: cover;
 }
 .chatApp__noMesRoomInfor{
     flex-grow: 1;

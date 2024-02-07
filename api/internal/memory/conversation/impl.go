@@ -38,3 +38,7 @@ func (impl Impl) Get(ctx context.Context, uuid string) (model.Conversation, erro
 func (impl Impl) Set(ctx context.Context, uuid string, duration time.Duration, data model.Conversation) error {
 	return impl.redisClient.Set(ctx, genConversationKey(uuid), duration, data)
 }
+
+func (impl Impl) Overwrite(ctx context.Context, uuid string, data model.Conversation) error {
+	return impl.redisClient.Overwrite(ctx, genConversationKey(uuid), data)
+}

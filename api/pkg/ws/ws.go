@@ -126,9 +126,9 @@ func (l *WebsocketListener) HandleConnections(w http.ResponseWriter, r *http.Req
 	for {
 		var msg Message
 		if err := client.Conn.ReadJSON(&msg); err != nil {
+			l.removeClientByConn(ws)
 			log.Printf("Cannot read the message: %v", err)
 			l.disconnectionHandler(client)
-			l.removeClientByConn(ws)
 			break
 		}
 

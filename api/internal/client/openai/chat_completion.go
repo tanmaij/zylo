@@ -34,6 +34,7 @@ func NewChatCompletion(apiKey, model string) (ChatCompletion, error) {
 }
 
 func createPayload(body []byte) api.Payload {
+	log.Printf("creating payload with body %v", string(body))
 	return api.Payload{
 		Body:        body,
 		QueryParams: nil,
